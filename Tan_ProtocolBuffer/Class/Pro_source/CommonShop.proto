@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+option java_package = "com.imrobot.proto";
+option java_outer_classname = "CommonShopProto"; 
+
+// 消息实体
+message ChatMsg {
+  required string talker=1;
+  required string content=2;
+
+// 必传 1:文本消息. 2:图片URL 3：视频URL 4：语音URL 5：名片 6:文章 7:位置 8:红包
+  required int32 msgType=3;
+
+  required string receiveWxId=4;
+  optional string thImgVideo=5;  // 视频第一帧图片地址
+  optional int32 videolength=6;   // 视频时长，单位秒
+  required int64 createTime=7;
+ }
+ message Identity{
+    required int32  shopId=1;	
+	required int32  userId=2;
+	required string token=3;
+	
+}
+message Operation{
+  required int32 cmd=1;   // 必传. 具体业务指令 如发朋友圈，加好友，点赞等
+  required string data=2;    // 必传. 以JOSN格式编写具体数据
+}

@@ -81,7 +81,7 @@
     [per.animalsArray addObject:an1];
     
     //对象序列化：存储或传递
-    NSData *data = [per data];
+    NSData *data = [per delimitedData];
     self.myData = data;
     
     self.infoLbl.text = @"数据序列化成功！";
@@ -91,14 +91,17 @@
 - (void)deserialize:(UIButton *)sender{
 
     //二进制数据反序列化为对象
-    Person *per = [Person parseFromData:self.myData error:NULL];
+    GPBCodedInputStream *inputStream = [GPBCodedInputStream streamWithData:self.myData];
     
-    //展示数据
-    if (per == nil){
+    NSError *error;
+    Person *per = [Person parseDelimitedFromCodedInputStream:inputStream extensionRegistry:nil error:&error];
+    
+    if (error){
         self.infoLbl.text = @"解析数据失败！";
         return;
     }
     
+    //展示数据
     NSMutableString *str = [[NSMutableString alloc] init];
     [str appendString:@"二进制数据反序列化为对象\n"];
     [str appendFormat:@"name: %@, age: %d \n", per.name, per.age];
