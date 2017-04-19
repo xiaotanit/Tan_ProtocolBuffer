@@ -152,6 +152,9 @@
     //对于粘包情况下被合并的多条消息，循环递归直至解析完所有消息
     headL = 0;
     contentL = [self getContentLength:self.receiveData withHeadLength:&headL];
+    
+    if (headL + contentL > self.receiveData.length) return; //实际包不足解析，继续接收下一个包
+    
     [self parseContentDataWithHeadLength:headL withContentLength:contentL]; //继续解析下一条
 }
 
